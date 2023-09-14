@@ -1,4 +1,4 @@
-package com.melitaltd.models;
+package com.melitaltd.model;
 
 public enum TVPackage {
     CHANNEL_90, CHANNEL_140

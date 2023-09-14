@@ -1,4 +1,4 @@
-package com.melitaltd.models;
+package com.melitaltd.model;
 
 import lombok.Data;
 

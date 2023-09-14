@@ -8,10 +8,6 @@ import java.time.LocalDateTime;
 
 @Slf4j
 public class FutureLocalDateTimeValidator implements ConstraintValidator<FutureLocalDateTime, LocalDateTime> {
-    @Override
-    public void initialize(FutureLocalDateTime constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
-    }
 
     @Override
     public boolean isValid(LocalDateTime localDateTime, ConstraintValidatorContext constraintValidatorContext) {

@@ -1,4 +1,4 @@
-package com.melitaltd.models;
+package com.melitaltd.model;
 
 import com.melitaltd.services.customvalidator.FutureLocalDateTime;
 import jakarta.validation.constraints.NotEmpty;
@@ -12,14 +12,12 @@ import java.util.List;
 public class OrderRequest {
 
     @NotNull(message = "personal information cannot be null")
-    @NotEmpty(message = "personal information cannot be empty")
     private PersonalInformation personalInformation;
 
     @NotNull(message = "installation address cannot be null")
     @NotEmpty(message = "installation address cannot be empty")
     private String installationAddress;
 
-    @NotEmpty(message = "installation date time cannot be empty")
     @FutureLocalDateTime
     private LocalDateTime installationDateTime;
 

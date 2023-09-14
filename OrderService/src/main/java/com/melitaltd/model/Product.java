@@ -1,8 +1,6 @@
-package com.melitaltd.models;
+package com.melitaltd.model;
 
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class Product {

@@ -1,8 +1,7 @@
 package com.melitaltd.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -11,17 +10,35 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMqConfig {
-    private final AppProperties properties;
+    private final RabbitMQProperties properties;
+    private final ConnectionFactory connectionFactory;
 
-    public RabbitMqConfig(AppProperties properties) {
+    public RabbitMqConfig(RabbitMQProperties properties, ConnectionFactory connectionFactory) {
+
         this.properties = properties;
+        this.connectionFactory = connectionFactory;
     }
 
     @Bean
     public Exchange directExchange(){
-        return new DirectExchange(properties.getDirectExchange(), true, false);
+        // direct exchange/queue
+        return new DirectExchange(properties.getExchange(), true, false);
     }
 
+    @Bean
+    public Queue queue(){
+        return new Queue(properties.getQueue());
+    }
+
+    @Bean
+    public Binding binding() {
+        return BindingBuilder
+                .bind(queue())
+                .to(directExchange())
+                .with(properties.getRoutingkey()).noargs();
+    }
+
+    @Bean
     public Jackson2JsonMessageConverter messageConverter(ObjectMapper mapper){
         var converter = new Jackson2JsonMessageConverter(mapper);
         return converter;

@@ -1,9 +1,7 @@
-package com.melitaltd.models;
+package com.melitaltd.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
