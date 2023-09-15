@@ -17,7 +17,7 @@ public class FutureLocalDateTimeValidator implements ConstraintValidator<FutureL
             }
             LocalDateTime currentDateTime = LocalDateTime.now();
             return localDateTime.isAfter(currentDateTime);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return false;
         }

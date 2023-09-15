@@ -3,20 +3,23 @@ package com.melitaltd.services;
 import com.melitaltd.amq.RabbitMQProducer;
 import com.melitaltd.exception.ServiceException;
 import com.melitaltd.model.*;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TestOrderService {
 
     @Mock
@@ -30,7 +33,7 @@ public class TestOrderService {
     private OrderService orderService;
 
     @Test
-    public void test_send_request_message_with_valid_request_object(){
+    public void test_send_request_message_with_valid_request_object() {
         PersonalInformation personalInformation = new PersonalInformation();
         personalInformation.setFirstName("Murtaza");
         personalInformation.setLastName("Abbas");
@@ -52,14 +55,18 @@ public class TestOrderService {
         Mockito.when(modelMapper.map(any(), any())).thenReturn(new Order());
         Mockito.doNothing().when(rabbitMQProducer).sendRequestMessage(any());
         Mockito.when(orderService.sendRequestMessage(orderRequest)).thenCallRealMethod();
-        OrderResponse orderResponse = orderService.sendRequestMessage(orderRequest);
-        Assert.assertEquals(orderResponse.getOrderId(), "12345");
+        Order order = orderService.sendRequestMessage(orderRequest);
+        assertNotNull(order.getId());
     }
 
-    @Test(expected=ServiceException.class)
-    public void test_send_request_message_with_null_request_object(){
-        OrderRequest orderRequest = null;
-        Mockito.when(orderService.sendRequestMessage(orderRequest)).thenCallRealMethod();
-        OrderResponse orderResponse = orderService.sendRequestMessage(orderRequest);
+    @Test
+    public void test_send_request_message_with_null_request_object() {
+        assertThrows(ServiceException.class,
+                () -> {
+                    OrderRequest orderRequest = null;
+                    Mockito.when(orderService.sendRequestMessage(orderRequest)).thenCallRealMethod();
+                    Order order = orderService.sendRequestMessage(orderRequest);
+                });
+
     }
 }

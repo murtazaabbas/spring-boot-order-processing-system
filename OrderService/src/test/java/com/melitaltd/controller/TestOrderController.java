@@ -1,68 +1,40 @@
 package com.melitaltd.controller;
 
-import com.melitaltd.amq.RabbitMQProducer;
-import com.melitaltd.config.SecurityProperties;
-import com.melitaltd.controllers.OrderController;
-import com.melitaltd.services.OrderService;
-import org.junit.Before;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.melitaltd.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import org.modelmapper.ModelMapper;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
-import com.melitaltd.model.*;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-
-@Profile("dev")
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest(classes = StartApplication.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("dev")
 public class TestOrderController {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Autowired
-    private SecurityProperties properties;
-
-    @Mock
-    private ModelMapper modelMapper;
-
-    @Mock
-    private RabbitMQProducer rabbitMQProducer;
-
-    @InjectMocks
-    @Spy
-    private OrderService orderService;
-
-    @InjectMocks
-    @Spy
-    private OrderController orderController;
-
-    public HttpHeaders getHeaders(){
+    public HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-API-KEY", properties.getKey());
-        headers.add("X-API-SECRET", properties.getSecret());
+        headers.add("X-API-KEY", "a1753388-df37-40ca-beb5-48c47e7e065d");
+        headers.add("X-API-SECRET", "YmxhYWJsYWJsYWE=");
         return headers;
     }
 
-    @Before
-    void setup() {
-        MockitoAnnotations.initMocks(this);
-        rabbitMQProducer = Mockito.mock(RabbitMQProducer.class);
-        orderService = Mockito.mock(OrderService.class);
-        orderController = Mockito.mock(OrderController.class);
-        modelMapper = Mockito.mock(ModelMapper.class);
-    }
-
     @Test
-    public void test_order_api_with_valid_request_return_order_id() {
+    public void test_order_api_with_valid_request_return_order_id() throws Exception {
         PersonalInformation personalInformation = new PersonalInformation();
         personalInformation.setFirstName("Murtaza");
         personalInformation.setLastName("Abbas");
@@ -83,13 +55,11 @@ public class TestOrderController {
 
         HttpEntity<OrderRequest> request = new HttpEntity<>(orderRequest, getHeaders());
 
-        Mockito.when(modelMapper.map(any(), any())).thenReturn(new Order());
-        Mockito.doNothing().when(rabbitMQProducer).sendRequestMessage(any());
-        ResponseEntity<OrderResponse> orderResponseResponseEntity = restTemplate.exchange("/api/v1/orderservice/order", HttpMethod.POST, request, OrderResponse.class);
+        ResponseEntity<Order> orderResponseResponseEntity = restTemplate.exchange("/api/v1/orderservice/order", HttpMethod.POST, request, Order.class);
 
 
         Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.OK);
-        Assert.notNull(orderResponseResponseEntity.getBody().getOrderId());
+        Assert.notNull(orderResponseResponseEntity.getBody().getId());
     }
 
     @Test
@@ -117,5 +87,14 @@ public class TestOrderController {
         ResponseEntity<String> orderResponseResponseEntity = restTemplate.exchange("/api/v1/orderservice/order", HttpMethod.POST, request, String.class);
         Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
         Assert.notNull(orderResponseResponseEntity);
+    }
+
+    @Test
+    public void test_order_api_without_api_secret_headers_return_bad_request() {
+        OrderRequest orderRequest = new OrderRequest();
+        HttpEntity<OrderRequest> request = new HttpEntity<>(orderRequest);
+        ResponseEntity<String> orderResponseResponseEntity = restTemplate.exchange("/api/v1/orderservice/order", HttpMethod.POST, request, String.class);
+        Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.UNAUTHORIZED);
+        Assert.isTrue(orderResponseResponseEntity.getBody().contains("UNAUTHORIZED"));
     }
 }

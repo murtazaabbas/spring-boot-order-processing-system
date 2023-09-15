@@ -16,12 +16,13 @@ import java.util.List;
 
 @Configuration
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
-    private SecurityProperties securityProperties;
     private final List<AntPathRequestMatcher> excludedMatchers = List.of(new AntPathRequestMatcher("/api/v1/orderservice/test"));
+    private SecurityProperties securityProperties;
 
-    public ApiKeyAuthFilter(SecurityProperties securityProperties){
+    public ApiKeyAuthFilter(SecurityProperties securityProperties) {
         this.securityProperties = securityProperties;
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

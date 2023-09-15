@@ -1,7 +1,7 @@
 package com.melitaltd.controllers;
 
+import com.melitaltd.model.Order;
 import com.melitaltd.model.OrderRequest;
-import com.melitaltd.model.OrderResponse;
 import com.melitaltd.services.OrderService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +23,13 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<?> order(@Valid @RequestBody OrderRequest order){
-        OrderResponse orderResponse = this.orderService.sendRequestMessage(order);
-        return ResponseEntity.ok(orderResponse);
+    public ResponseEntity<?> order(@Valid @RequestBody OrderRequest orderRequest) {
+        Order order = this.orderService.sendRequestMessage(orderRequest);
+        return ResponseEntity.ok(order);
     }
 
     @GetMapping("/test")
-    public ResponseEntity<?> test(){
+    public ResponseEntity<?> test() {
         return ResponseEntity.ok("hello world");
     }
 
