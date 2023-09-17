@@ -1,8 +1,5 @@
 package com.melitaltd.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.melitaltd.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//@SpringBootTest(classes = StartApplication.class)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("dev")
@@ -41,8 +37,9 @@ public class TestOrderController {
         personalInformation.setNationalID("123456789");
 
         Product product = new Product();
-        product.setInternetPackage(InternetPackage.INTERNET_1_GBPS);
-        product.setMobilePackage(MobilePackage.POST_PAID);
+        product.setProductPackage(ProductPackage.INTERNET_1_GBPS);
+        Product product1 = new Product();
+        product1.setProductPackage(ProductPackage.Mobile_POST_PAID);
         List<Product> products = List.of(product);
 
         OrderRequest orderRequest = new OrderRequest();
@@ -59,7 +56,7 @@ public class TestOrderController {
 
 
         Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.OK);
-        Assert.notNull(orderResponseResponseEntity.getBody().getId());
+        Assert.notNull(orderResponseResponseEntity.getBody().getTraceId());
     }
 
     @Test
@@ -70,9 +67,10 @@ public class TestOrderController {
         personalInformation.setNationalID("123456789");
 
         Product product = new Product();
-        product.setInternetPackage(InternetPackage.INTERNET_1_GBPS);
-        product.setMobilePackage(MobilePackage.POST_PAID);
-        List<Product> products = List.of(product);
+        product.setProductPackage(ProductPackage.INTERNET_1_GBPS);
+        Product product1 = new Product();
+        product1.setProductPackage(ProductPackage.Mobile_POST_PAID);
+        List<Product> products = List.of(product, product1);
 
         OrderRequest orderRequest = new OrderRequest();
 //        dont add personalInformation, now its invalid object

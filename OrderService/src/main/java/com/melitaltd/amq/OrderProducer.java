@@ -6,12 +6,12 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RabbitMQProducer {
+public class OrderProducer {
     private final RabbitTemplate rabbitTemplate;
 
     private final RabbitMQProperties properties;
 
-    public RabbitMQProducer(RabbitTemplate rabbitTemplate, RabbitMQProperties properties) {
+    public OrderProducer(RabbitTemplate rabbitTemplate, RabbitMQProperties properties) {
         this.rabbitTemplate = rabbitTemplate;
         this.properties = properties;
     }

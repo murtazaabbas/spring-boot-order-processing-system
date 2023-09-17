@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "app.rabbitmq")
-public class RabbitMQProperties {
-    private String exchange;
-    private String queue;
-    private String routingkey;
-
+@ConfigurationProperties(prefix = "api.thirdparty")
+public class SecurityProperty {
+    private String key;
+    private String secret;
 }

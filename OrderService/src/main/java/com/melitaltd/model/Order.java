@@ -3,6 +3,6 @@ package com.melitaltd.model;
 import lombok.Data;
 
 @Data
-public class Order extends OrderRequest {
-    private String id;
+public class Order extends OrderRequest{
+    private String traceId;
 }

@@ -1,6 +1,6 @@
 package com.melitaltd.services;
 
-import com.melitaltd.amq.RabbitMQProducer;
+import com.melitaltd.amq.OrderProducer;
 import com.melitaltd.exception.ServiceException;
 import com.melitaltd.model.*;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class TestOrderService {
     private ModelMapper modelMapper;
 
     @Mock
-    private RabbitMQProducer rabbitMQProducer;
+    private OrderProducer orderProducer;
 
     @InjectMocks
     @Spy
@@ -40,8 +40,8 @@ public class TestOrderService {
         personalInformation.setNationalID("123456789");
 
         Product product = new Product();
-        product.setInternetPackage(InternetPackage.INTERNET_1_GBPS);
-        product.setMobilePackage(MobilePackage.POST_PAID);
+        product.setProductPackage(ProductPackage.INTERNET_1_GBPS);
+        product.setProductPackage(ProductPackage.Mobile_POST_PAID);
         List<Product> products = List.of(product);
 
         OrderRequest orderRequest = new OrderRequest();
@@ -53,10 +53,10 @@ public class TestOrderService {
         orderRequest.setInstallationDateTime(installationDateTime.plusHours(2));
 
         Mockito.when(modelMapper.map(any(), any())).thenReturn(new Order());
-        Mockito.doNothing().when(rabbitMQProducer).sendRequestMessage(any());
+        Mockito.doNothing().when(orderProducer).sendRequestMessage(any());
         Mockito.when(orderService.sendRequestMessage(orderRequest)).thenCallRealMethod();
         Order order = orderService.sendRequestMessage(orderRequest);
-        assertNotNull(order.getId());
+        assertNotNull(order.getTraceId());
     }
 
     @Test

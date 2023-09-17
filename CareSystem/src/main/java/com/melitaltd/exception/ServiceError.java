@@ -6,7 +6,7 @@ public enum ServiceError implements RestError {
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ""),
     REQUEST_VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Invalid expected input"),
-    NOT_MATCHED_PASSWORDS(HttpStatus.BAD_REQUEST, "Passwords are not matched"),
+    DATA_NOT_AVAILABLE(HttpStatus.NOT_FOUND, "No order data available"),
     NOT_AUTHORIZED_ERROR(HttpStatus.UNAUTHORIZED, "Unauthorized user");
 
     private HttpStatus httpStatus;

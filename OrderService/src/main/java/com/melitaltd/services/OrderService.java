@@ -1,7 +1,7 @@
 package com.melitaltd.services;
 
 
-import com.melitaltd.amq.RabbitMQProducer;
+import com.melitaltd.amq.OrderProducer;
 import com.melitaltd.exception.ServiceError;
 import com.melitaltd.model.Order;
 import com.melitaltd.model.OrderRequest;
@@ -14,20 +14,20 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class OrderService {
-    private final RabbitMQProducer rabbitMQProducer;
+    private final OrderProducer orderProducer;
     private final ModelMapper modelMapper;
 
-    public OrderService(RabbitMQProducer rabbitMQProducer, ModelMapper modelMapper) {
-        this.rabbitMQProducer = rabbitMQProducer;
+    public OrderService(OrderProducer orderProducer, ModelMapper modelMapper) {
+        this.orderProducer = orderProducer;
         this.modelMapper = modelMapper;
     }
 
     public Order sendRequestMessage(OrderRequest orderRequest) {
         try {
             Order order = modelMapper.map(orderRequest, Order.class);
-            order.setId(UUID.randomUUID().toString());
+            order.setTraceId(UUID.randomUUID().toString());
             log.info("Sending message: " + order);
-            rabbitMQProducer.sendRequestMessage(order);
+            orderProducer.sendRequestMessage(order);
             return order;
         } catch (Exception e) {
             log.error(e.getMessage());

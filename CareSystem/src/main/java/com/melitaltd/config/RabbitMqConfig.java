@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMqConfig {
-    private final RabbitMQProperties properties;
+    private final RabbitMQProperty properties;
     private final ConnectionFactory connectionFactory;
 
-    public RabbitMqConfig(RabbitMQProperties properties, ConnectionFactory connectionFactory) {
+    public RabbitMqConfig(RabbitMQProperty properties, ConnectionFactory connectionFactory) {
 
         this.properties = properties;
         this.connectionFactory = connectionFactory;
@@ -44,24 +44,25 @@ public class RabbitMqConfig {
         var converter = new Jackson2JsonMessageConverter(mapper);
         return converter;
     }
-
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory factory, ObjectMapper objectMapper) {
-        RabbitTemplate template = new RabbitTemplate();
-        template.setConnectionFactory(factory);
-        template.setMessageConverter(messageConverter(objectMapper));
-        return template;
-    }
-
-    @Bean
-    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
-            ConnectionFactory connectionFactory,
-            ObjectMapper objectMapper) {
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory);
-        factory.setMessageConverter(messageConverter(objectMapper));
-//        factory.setAcknowledgeMode(AcknowledgeMode.AUTO); //by default set to AUTO
-        return factory;
-    }
+//
+//    @Bean
+//    public RabbitTemplate rabbitTemplate(ConnectionFactory factory, ObjectMapper objectMapper) {
+//        RabbitTemplate template = new RabbitTemplate();
+//        template.setConnectionFactory(factory);
+//        template.setMessageConverter(messageConverter(objectMapper));
+//        return template;
+//    }
+//
+//    @Bean(name = "rabbitListenerManualContainerFactory")
+//    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
+//            ConnectionFactory connectionFactory,
+//            ObjectMapper objectMapper) {
+//        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+//        factory.setConnectionFactory(connectionFactory);
+//        factory.setMessageConverter(messageConverter(objectMapper));
+//        factory.setConcurrentConsumers(1);
+////        factory.setAcknowledgeMode(AcknowledgeMode.AUTO); //by default set to AUTO
+//        return factory;
+//    }
 
 }

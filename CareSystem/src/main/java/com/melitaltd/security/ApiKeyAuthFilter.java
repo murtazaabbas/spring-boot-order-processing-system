@@ -1,7 +1,7 @@
 package com.melitaltd.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.melitaltd.config.SecurityProperties;
+import com.melitaltd.config.SecurityProperty;
 import com.melitaltd.exception.ServiceErrorResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,11 +16,15 @@ import java.util.List;
 
 @Configuration
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
-    private final List<AntPathRequestMatcher> excludedMatchers = List.of(new AntPathRequestMatcher("/api/v1/orderservice/test"));
-    private SecurityProperties securityProperties;
+    private final List<AntPathRequestMatcher> excludedMatchers = List.of(
+            new AntPathRequestMatcher("/api/v1/orderservice/test"),
+            new AntPathRequestMatcher("/h2-console"),
+            new AntPathRequestMatcher("/console/**"),
+            new AntPathRequestMatcher("/h2-ui"));
+    private SecurityProperty securityProperty;
 
-    public ApiKeyAuthFilter(SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
+    public ApiKeyAuthFilter(SecurityProperty securityProperty) {
+        this.securityProperty = securityProperty;
     }
 
     @Override
@@ -31,7 +35,7 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
         String requestApiKey = request.getHeader("X-API-KEY");
         String requestApiSecret = request.getHeader("X-API-SECRET");
         // Validate the key and secret
-        if (securityProperties.getKey().equals(requestApiKey) && securityProperties.getSecret().equals(requestApiSecret)) {
+        if (securityProperty.getKey().equals(requestApiKey) && securityProperty.getSecret().equals(requestApiSecret)) {
             // Continue processing the request
             filterChain.doFilter(request, response);
         } else {
