@@ -92,7 +92,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.presiskonsult.services.resumebuilder.ResumeBuilderApplication</mainClass>
+                    <mainClass>com.melitaltd.StartApplication</mainClass>
                     <layout>JAR</layout>
                 </configuration>
                 <executions>

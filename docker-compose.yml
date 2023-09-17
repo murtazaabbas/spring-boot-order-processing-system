@@ -7,3 +7,17 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      - mynetwork
+  configserver:
+    depends_on:
+      - rabbitmq
+    build:
+      context: ./ConfigServer
+    ports:
+      - "8888:8888"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:

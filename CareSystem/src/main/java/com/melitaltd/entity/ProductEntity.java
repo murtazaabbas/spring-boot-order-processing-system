@@ -11,10 +11,9 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @ManyToOne
-    @JoinColumn(name="order_id", nullable=false)
-    @JsonIgnore
-    private OrderEntity order;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private OrderEntity orderEntity;
     @Column(name = "package")
     private ProductPackage productPackage;
 }

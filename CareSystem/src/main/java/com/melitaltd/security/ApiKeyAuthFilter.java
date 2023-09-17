@@ -14,13 +14,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
     private final List<AntPathRequestMatcher> excludedMatchers = List.of(
-            new AntPathRequestMatcher("/api/v1/orderservice/test"),
-            new AntPathRequestMatcher("/h2-console"),
-            new AntPathRequestMatcher("/console/**"),
-            new AntPathRequestMatcher("/h2-ui"));
+            new AntPathRequestMatcher("/api/v1/orderservice/test"));
     private SecurityProperty securityProperty;
 
     public ApiKeyAuthFilter(SecurityProperty securityProperty) {
@@ -31,16 +28,21 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Get the API key and secret from request headers
-        String requestApiKey = request.getHeader("X-API-KEY");
-        String requestApiSecret = request.getHeader("X-API-SECRET");
-        // Validate the key and secret
-        if (securityProperty.getKey().equals(requestApiKey) && securityProperty.getSecret().equals(requestApiSecret)) {
-            // Continue processing the request
+        if (isH2ConsoleRequest(request)) {
+            // Allow the request to proceed without filtering
             filterChain.doFilter(request, response);
-        } else {
-            // Reject the request and send an unauthorized error
-            handleInvalidToken(response, "Unauthorised accessed");
+        }else {
+            // Get the API key and secret from request headers
+            String requestApiKey = request.getHeader("X-API-KEY");
+            String requestApiSecret = request.getHeader("X-API-SECRET");
+            // Validate the key and secret
+            if (securityProperty.getKey().equals(requestApiKey) && securityProperty.getSecret().equals(requestApiSecret)) {
+                // Continue processing the request
+                filterChain.doFilter(request, response);
+            } else {
+                // Reject the request and send an unauthorized error
+                handleInvalidToken(response, "Unauthorised accessed");
+            }
         }
     }
 
@@ -57,5 +59,10 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return excludedMatchers.stream()
                 .anyMatch(matcher -> matcher.matches(request));
+    }
+
+    private boolean isH2ConsoleRequest(HttpServletRequest request) {
+        // Customize this logic to match the H2 database console URL pattern
+        return request.getRequestURI().startsWith("/h2-console");
     }
 }

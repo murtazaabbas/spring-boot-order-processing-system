@@ -17,13 +17,13 @@ public class OrderEntity {
     private int id;
     @Column(name = "trace_id")
     private String traceId;
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy="orderEntity")
     private PersonalInformationEntity personalInformation;
     @Column(name = "installation_address")
     private String installationAddress;
     @Column(name = "installation_date_time")
     private LocalDateTime installationDateTime;
-    @OneToMany(mappedBy="order")
+    @OneToMany(mappedBy="orderEntity")
     private List<ProductEntity> products;
     @Column(name = "approve")
     // 0 pending, 1 yes, 2 No, 3 auto approval

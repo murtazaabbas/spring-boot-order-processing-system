@@ -12,7 +12,7 @@ public class PersonalInformationEntity {
     private int id;
     @OneToOne
     @JoinColumn(name = "order_id")
-    private OrderEntity order;
+    private OrderEntity orderEntity;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
