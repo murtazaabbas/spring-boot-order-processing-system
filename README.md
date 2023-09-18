@@ -24,7 +24,7 @@ Checkout the branch and run the below mention command in each of the module so t
 and build the jar file:
 
 ````
-mvn clean build
+mvn clean install
 ````
 
 ## Manual Run
@@ -47,3 +47,12 @@ Also, Integration testing, Junit+Mockito for business logic and Business model t
 service for the demonstration.
 
 For order fullfillment dummy fiegnclient has been created and comment out later to show how http web service can be call.
+
+## For System Integration Test
+
+Docker compose file contains all the required containers. you need to have dockers on your machine.
+````
+docker-compose up
+````
+
+Once all the containers are up then use postman collection for testing

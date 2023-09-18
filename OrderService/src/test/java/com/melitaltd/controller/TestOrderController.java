@@ -88,13 +88,4 @@ public class TestOrderController {
         Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
         Assert.notNull(orderResponseResponseEntity);
     }
-
-//    @Test
-//    public void test_order_api_without_api_secret_headers_return_bad_request() {
-//        Order orderRequest = new Order();
-//        HttpEntity<Order> request = new HttpEntity<>(orderRequest);
-//        ResponseEntity<String> orderResponseResponseEntity = restTemplate.exchange("/api/v1/orderservice/order", HttpMethod.POST, request, String.class);
-//        Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.UNAUTHORIZED);
-//        Assert.isTrue(orderResponseResponseEntity.getBody().contains("UNAUTHORIZED"));
-//    }
 }
