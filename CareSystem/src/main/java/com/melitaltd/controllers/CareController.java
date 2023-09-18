@@ -1,7 +1,6 @@
 package com.melitaltd.controllers;
 
 import com.melitaltd.model.ApprovalRequest;
-import com.melitaltd.model.Order;
 import com.melitaltd.services.CareService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.melitaltd.StartApplication.API_VERSION_1;
+import static com.melitaltd.StartCareSystemApplication.API_VERSION_1;
 
 @RestController
 @RequestMapping(API_VERSION_1 + "/caresystem")
@@ -25,20 +24,15 @@ public class CareController {
     }
 
     @PatchMapping("/approve-order/{orderId}")
-    public ResponseEntity<?> approveOrder(@NotNull @NotEmpty @PathVariable Integer orderId,
-                                          @Valid @RequestBody ApprovalRequest approvalRequest) {
+    public ResponseEntity<?> approveOrder(@NotNull @PathVariable Integer orderId,
+                                          @NotNull @RequestBody ApprovalRequest approvalRequest) {
         this.careService.approveOrder(orderId, approvalRequest);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/get-pending-orders")
-    public ResponseEntity<?> getPendingForApprovalOrders() {
-        return ResponseEntity.ok(this.careService.getOrdersByApprovalStatus(0));
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<?> test() {
-        return ResponseEntity.ok("hello world");
+    @GetMapping("/orders")
+    public ResponseEntity<?> getPendingForApprovalOrders(@RequestParam(defaultValue = "-1") int orderType) {
+        return ResponseEntity.ok(this.careService.getOrdersByApprovalStatus(orderType));
     }
 
 }

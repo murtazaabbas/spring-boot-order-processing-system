@@ -2,7 +2,6 @@ package com.melitaltd.services;
 
 import com.melitaltd.config.CommonProperty;
 import com.melitaltd.entity.OrderEntity;
-import com.melitaltd.feignclient.OrderFullfillmentClient;
 import com.melitaltd.model.Order;
 import com.melitaltd.repository.OrderRepository;
 import org.modelmapper.ModelMapper;
@@ -19,19 +18,17 @@ public class OrderService {
     private final ModelMapper modelMapper;
     private final CommonProperty commonProperty;
     private final OrderEmailService orderEmailService;
-    private final OrderFullfillmentClient orderFullfillmentClient;
 
     public OrderService(OrderRepository orderRepository,
                         ModelMapper modelMapper,
-                        CommonProperty commonProperty, OrderEmailService orderEmailService, OrderFullfillmentClient orderFullfillmentClient){
+                        CommonProperty commonProperty, OrderEmailService orderEmailService){
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.commonProperty = commonProperty;
         this.orderEmailService = orderEmailService;
-        this.orderFullfillmentClient = orderFullfillmentClient;
     }
 
-    public CompletableFuture<Boolean> processMQOrder(Order order){
+    public CompletableFuture<Boolean> processMQOrder(Order order, String traceId){
         return CompletableFuture.supplyAsync(() -> {
             boolean manualApproval = order.getProducts().stream().anyMatch(
                     value -> commonProperty.getManualApproveProducts().contains(value.getProductPackage().getProduct()));

@@ -10,8 +10,7 @@ import java.util.List;
 
 @Data
 public class Order{
-    private int id;
-    private String traceId;
+    private Long id;
     @NotNull(message = "personal information cannot be null")
     private PersonalInformation personalInformation;
 

@@ -1,15 +1,16 @@
 package com.melitaltd.controllers;
 
 import com.melitaltd.model.Order;
-import com.melitaltd.model.OrderRequest;
 import com.melitaltd.services.OrderService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.melitaltd.StartApplication.API_VERSION_1;
+import static com.melitaltd.StartOrderServiceApplication.API_VERSION_1;
 
 @RestController
 @RequestMapping(API_VERSION_1 + "/orderservice")
@@ -23,14 +24,10 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<?> order(@Valid @RequestBody OrderRequest orderRequest) {
-        Order order = this.orderService.sendRequestMessage(orderRequest);
-        return ResponseEntity.ok(order);
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<?> test() {
-        return ResponseEntity.ok("hello world");
+    public ResponseEntity<?> order(@NotNull @NotEmpty @RequestHeader("TRACE-ID") String traceId,
+                                   @Valid @RequestBody Order order) {
+        this.orderService.sendRequestMessage(order, traceId);
+        return ResponseEntity.ok().build();
     }
 
 }

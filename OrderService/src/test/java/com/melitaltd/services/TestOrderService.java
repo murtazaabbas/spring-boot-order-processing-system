@@ -14,10 +14,10 @@ import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TestOrderService {
@@ -44,7 +44,7 @@ public class TestOrderService {
         product.setProductPackage(ProductPackage.Mobile_POST_PAID);
         List<Product> products = List.of(product);
 
-        OrderRequest orderRequest = new OrderRequest();
+        Order orderRequest = new Order();
         orderRequest.setPersonalInformation(personalInformation);
         orderRequest.setProducts(products);
         orderRequest.setInstallationAddress("wieselgrensgatan 9A");
@@ -52,20 +52,17 @@ public class TestOrderService {
         LocalDateTime installationDateTime = LocalDateTime.now();
         orderRequest.setInstallationDateTime(installationDateTime.plusHours(2));
 
-        Mockito.when(modelMapper.map(any(), any())).thenReturn(new Order());
         Mockito.doNothing().when(orderProducer).sendRequestMessage(any());
-        Mockito.when(orderService.sendRequestMessage(orderRequest)).thenCallRealMethod();
-        Order order = orderService.sendRequestMessage(orderRequest);
-        assertNotNull(order.getTraceId());
+        boolean msgSent = orderService.sendRequestMessage(orderRequest, UUID.randomUUID().toString());
+        assertTrue(msgSent);
     }
 
     @Test
     public void test_send_request_message_with_null_request_object() {
         assertThrows(ServiceException.class,
                 () -> {
-                    OrderRequest orderRequest = null;
-                    Mockito.when(orderService.sendRequestMessage(orderRequest)).thenCallRealMethod();
-                    Order order = orderService.sendRequestMessage(orderRequest);
+                    Order orderRequest = null;
+                    orderService.sendRequestMessage(orderRequest, UUID.randomUUID().toString());
                 });
 
     }

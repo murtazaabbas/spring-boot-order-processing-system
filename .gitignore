@@ -7,4 +7,6 @@
 /.idea/spring-boot-orderEntity-processing-system.iml
 /.idea/uiDesigner.xml
 /.idea/vcs.xml
-/spring-boot-logger.log
+/care-system*.log
+/OrderService/orderEntity-service*.log
+/orderEntity-service*.log

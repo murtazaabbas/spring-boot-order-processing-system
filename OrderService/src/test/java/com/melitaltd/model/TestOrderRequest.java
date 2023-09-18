@@ -26,8 +26,8 @@ public class TestOrderRequest {
 
     @Test
     public void test_order_request_validation() {
-        OrderRequest orderRequest = new OrderRequest();
-        Set<ConstraintViolation<OrderRequest>> violations = validator.validate(orderRequest);
+        Order order = new Order();
+        Set<ConstraintViolation<Order>> violations = validator.validate(order);
         assertFalse(violations.isEmpty());
     }
 }

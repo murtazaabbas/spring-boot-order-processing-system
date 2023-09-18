@@ -42,21 +42,20 @@ public class TestOrderController {
         product1.setProductPackage(ProductPackage.Mobile_POST_PAID);
         List<Product> products = List.of(product);
 
-        OrderRequest orderRequest = new OrderRequest();
-        orderRequest.setPersonalInformation(personalInformation);
-        orderRequest.setProducts(products);
-        orderRequest.setInstallationAddress("wieselgrensgatan 9A");
+        Order order = new Order();
+        order.setPersonalInformation(personalInformation);
+        order.setProducts(products);
+        order.setInstallationAddress("wieselgrensgatan 9A");
 
         LocalDateTime installationDateTime = LocalDateTime.now();
-        orderRequest.setInstallationDateTime(installationDateTime.plusHours(2));
+        order.setInstallationDateTime(installationDateTime.plusHours(2));
 
-        HttpEntity<OrderRequest> request = new HttpEntity<>(orderRequest, getHeaders());
+        HttpEntity<Order> request = new HttpEntity<>(order, getHeaders());
 
         ResponseEntity<Order> orderResponseResponseEntity = restTemplate.exchange("/api/v1/orderservice/order", HttpMethod.POST, request, Order.class);
 
 
         Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.OK);
-        Assert.notNull(orderResponseResponseEntity.getBody().getTraceId());
     }
 
     @Test
@@ -72,16 +71,16 @@ public class TestOrderController {
         product1.setProductPackage(ProductPackage.Mobile_POST_PAID);
         List<Product> products = List.of(product, product1);
 
-        OrderRequest orderRequest = new OrderRequest();
+        Order order = new Order();
 //        dont add personalInformation, now its invalid object
-//        orderRequest.setPersonalInformation(personalInformation);
-        orderRequest.setProducts(products);
-        orderRequest.setInstallationAddress("wieselgrensgatan 9A");
+//        order.setPersonalInformation(personalInformation);
+        order.setProducts(products);
+        order.setInstallationAddress("wieselgrensgatan 9A");
 
         LocalDateTime installationDateTime = LocalDateTime.now();
-        orderRequest.setInstallationDateTime(installationDateTime.plusHours(2));
+        order.setInstallationDateTime(installationDateTime.plusHours(2));
 
-        HttpEntity<OrderRequest> request = new HttpEntity<>(orderRequest, getHeaders());
+        HttpEntity<Order> request = new HttpEntity<>(order, getHeaders());
         ResponseEntity<String> orderResponseResponseEntity = restTemplate.exchange("/api/v1/orderservice/order", HttpMethod.POST, request, String.class);
         Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
         Assert.notNull(orderResponseResponseEntity);
@@ -89,8 +88,8 @@ public class TestOrderController {
 
 //    @Test
 //    public void test_order_api_without_api_secret_headers_return_bad_request() {
-//        OrderRequest orderRequest = new OrderRequest();
-//        HttpEntity<OrderRequest> request = new HttpEntity<>(orderRequest);
+//        Order orderRequest = new Order();
+//        HttpEntity<Order> request = new HttpEntity<>(orderRequest);
 //        ResponseEntity<String> orderResponseResponseEntity = restTemplate.exchange("/api/v1/orderservice/order", HttpMethod.POST, request, String.class);
 //        Assertions.assertEquals(orderResponseResponseEntity.getStatusCode(), HttpStatus.UNAUTHORIZED);
 //        Assert.isTrue(orderResponseResponseEntity.getBody().contains("UNAUTHORIZED"));

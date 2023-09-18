@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-//@Configuration
+@Configuration
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
     private final List<AntPathRequestMatcher> excludedMatchers = List.of(
             new AntPathRequestMatcher("/api/v1/orderservice/test"));

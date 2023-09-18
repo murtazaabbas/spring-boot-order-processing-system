@@ -9,9 +9,8 @@ import lombok.Data;
 public class PersonalInformationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    @OneToOne
-    @JoinColumn(name = "order_id")
+    private Long id;
+    @OneToOne(mappedBy = "personalInformation")
     private OrderEntity orderEntity;
     @Column(name = "first_name")
     private String firstName;

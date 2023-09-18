@@ -9,13 +9,38 @@ services:
       - 15672:15672
     networks:
       - mynetwork
-  configserver:
-    depends_on:
-      - rabbitmq
+  config-server:
     build:
       context: ./ConfigServer
+    container_name: config-server
     ports:
       - "8888:8888"
+    networks:
+      - mynetwork
+  order-service:
+    depends_on:
+      - rabbitmq
+      - config-server
+    build:
+      context: ./OrderService
+    container_name: order-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=test # Set your desired profile here
+    networks:
+      - mynetwork
+  care-system:
+    depends_on:
+      - order-service
+      - rabbitmq
+    build:
+      context: ./CareSystem
+    container_name: care-system
+    ports:
+      - "9090:9090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=test # Set your desired profile here
     networks:
       - mynetwork
 

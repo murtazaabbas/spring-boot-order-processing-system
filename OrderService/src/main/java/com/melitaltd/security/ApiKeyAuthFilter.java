@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Configuration
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
@@ -33,7 +34,9 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
         // Validate the key and secret
         if (securityProperties.getKey().equals(requestApiKey) && securityProperties.getSecret().equals(requestApiSecret)) {
             // Continue processing the request
-            filterChain.doFilter(request, response);
+            HttpRequestWrapper wrappedRequest = new HttpRequestWrapper(request);
+            wrappedRequest.addHeader("TRACE-ID", UUID.randomUUID().toString());
+            filterChain.doFilter(wrappedRequest, response);
         } else {
             // Reject the request and send an unauthorized error
             handleInvalidToken(response, "Unauthorised accessed");

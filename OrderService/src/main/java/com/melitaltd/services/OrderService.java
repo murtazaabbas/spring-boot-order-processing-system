@@ -4,12 +4,12 @@ package com.melitaltd.services;
 import com.melitaltd.amq.OrderProducer;
 import com.melitaltd.exception.ServiceError;
 import com.melitaltd.model.Order;
-import com.melitaltd.model.OrderRequest;
+import com.melitaltd.model.QueueObjectWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -22,16 +22,18 @@ public class OrderService {
         this.modelMapper = modelMapper;
     }
 
-    public Order sendRequestMessage(OrderRequest orderRequest) {
-        try {
-            Order order = modelMapper.map(orderRequest, Order.class);
-            order.setTraceId(UUID.randomUUID().toString());
-            log.info("Sending message: " + order);
-            orderProducer.sendRequestMessage(order);
-            return order;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw ServiceError.INTERNAL_SERVER_ERROR.buildException(e.getMessage());
-        }
+    public boolean sendRequestMessage(Order order, String traceId) {
+        Optional.ofNullable(order)
+                .ifPresentOrElse(
+                        data -> {
+                            QueueObjectWrapper queueObjectWrapper = new QueueObjectWrapper(traceId, order);
+                            log.info("Sending queueObjectWrapper: " + queueObjectWrapper);
+                            orderProducer.sendRequestMessage(queueObjectWrapper);
+                        },
+                        () -> {
+                            throw ServiceError.INTERNAL_SERVER_ERROR.buildException();
+                        }
+                );
+        return true;
     }
 }
