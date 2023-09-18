@@ -7,113 +7,231 @@
 	},
 	"item": [
 		{
-			"name": "Testing Service",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9999/api/v1/orderservice/test",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9999",
-					"path": [
-						"api",
-						"v1",
-						"orderservice",
-						"test"
-					]
+			"name": "order-service-apis",
+			"item": [
+				{
+					"name": "order (agent-manual-approval-required)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "a1753388-df37-40ca-beb5-48c47e7e065d",
+								"type": "text"
+							},
+							{
+								"key": "X-API-SECRET",
+								"value": "YmxhYWJsYWJsYWE=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"personalInformation\": {\r\n\t\t\"firstName\": \"murtaza\",\r\n\t\t\"lastName\": \"abbas\",\r\n\t\t\"nationalID\": \"123456789\"\r\n\t},\r\n\t\"installationAddress\": \"wieselgresngatan 9A\",\r\n\t\"installationDateTime\": \"2024-01-21T05:47:08.644\",\r\n    \"products\": [\r\n        {\r\n            \"productPackage\": \"INTERNET_250_MBPS\"\r\n            \r\n        },\r\n        {\r\n            \"productPackage\": \"TV_CHANNEL_90\"\r\n        }\r\n        ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/orderservice/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orderservice",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order (agent-no-approval-required)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "a1753388-df37-40ca-beb5-48c47e7e065d",
+								"type": "text"
+							},
+							{
+								"key": "X-API-SECRET",
+								"value": "YmxhYWJsYWJsYWE=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"personalInformation\": {\r\n\t\t\"firstName\": \"adil\",\r\n\t\t\"lastName\": \"abbas\",\r\n\t\t\"nationalID\": \"123456789\"\r\n\t},\r\n\t\"installationAddress\": \"wieselgresngatan 9A\",\r\n\t\"installationDateTime\": \"2024-01-21T05:47:08.644\",\r\n    \"products\": [\r\n        {\r\n            \"productPackage\": \"MOBILE_PREPAID\"\r\n            \r\n        },\r\n        {\r\n            \"productPackage\": \"TELEPHONY_UNLIMITE\"\r\n        }\r\n        ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/orderservice/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orderservice",
+								"order"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "order",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "X-API-KEY",
-						"value": "a1753388-df37-40ca-beb5-48c47e7e065d",
-						"type": "text"
-					},
-					{
-						"key": "X-API-SECRET",
-						"value": "YmxhYWJsYWJsYWE=",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"personalInformation\": {\r\n\t\t\"firstName\": \"murtaza\",\r\n\t\t\"lastName\": \"abbas\",\r\n\t\t\"nationalID\": \"123456789\"\r\n\t},\r\n\t\"installationAddress\": \"wieselgresngatan 9A\",\r\n\t\"installationDateTime\": \"2024-01-21T05:47:08.644\",\r\n    \"products\": [\r\n        {\r\n            \"productPackage\": \"INTERNET_250_MBPS\"\r\n            \r\n        },\r\n        {\r\n            \"productPackage\": \"TV_CHANNEL_90\"\r\n        }\r\n        ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "care-system-apis",
+			"item": [
+				{
+					"name": "agent-get-all-orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454",
+								"type": "text"
+							},
+							{
+								"key": "X-API-SECRET",
+								"value": "YmlsbHlqZWFucw==",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9090/api/v1/caresystem/orders?orderType=-1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"caresystem",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "orderType",
+									"value": "-1"
+								}
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/v1/orderservice/order",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"orderservice",
-						"order"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "agent-get-pending-order",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "X-API-KEY",
-						"value": "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454",
-						"type": "text"
 					},
-					{
-						"key": "X-API-SECRET",
-						"value": "YmlsbHlqZWFucw==",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"personalInformation\": {\r\n\t\t\"firstName\": \"murtaza\",\r\n\t\t\"lastName\": \"abbas\",\r\n\t\t\"nationalID\": \"123456789\"\r\n\t},\r\n\t\"installationAddress\": \"wieselgresngatan 9A\",\r\n\t\"installationDateTime\": \"2024-01-21T05:47:08.644\",\r\n    \"products\": [\r\n        {\r\n            \"productPackage\": \"INTERNET_250_MBPS\"\r\n            \r\n        },\r\n        {\r\n            \"productPackage\": \"TV_CHANNEL_90\"\r\n        }\r\n        ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/v1/caresystem/get-pending-orders\"",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"caresystem",
-						"get-pending-orders\""
-					]
+				{
+					"name": "agent-get-pending-approval-orders",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454",
+								"type": "text"
+							},
+							{
+								"key": "X-API-SECRET",
+								"value": "YmlsbHlqZWFucw==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"personalInformation\": {\r\n\t\t\"firstName\": \"murtaza\",\r\n\t\t\"lastName\": \"abbas\",\r\n\t\t\"nationalID\": \"123456789\"\r\n\t},\r\n\t\"installationAddress\": \"wieselgresngatan 9A\",\r\n\t\"installationDateTime\": \"2024-01-21T05:47:08.644\",\r\n    \"products\": [\r\n        {\r\n            \"productPackage\": \"INTERNET_250_MBPS\"\r\n            \r\n        },\r\n        {\r\n            \"productPackage\": \"TV_CHANNEL_90\"\r\n        }\r\n        ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/v1/caresystem/orders?orderType=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"caresystem",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "orderType",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "agent-get-pending-approval-orders Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-KEY",
+								"value": "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454",
+								"type": "text"
+							},
+							{
+								"key": "X-API-SECRET",
+								"value": "YmlsbHlqZWFucw==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"approvalStatus\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/v1/caresystem/approve-order/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"caresystem",
+								"approve-order",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }

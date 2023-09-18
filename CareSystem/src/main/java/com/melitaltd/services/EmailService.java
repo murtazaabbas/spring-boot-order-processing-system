@@ -3,14 +3,9 @@ package com.melitaltd.services;
 import com.melitaltd.config.EmailProperty;
 import com.melitaltd.exception.ServiceError;
 import com.melitaltd.model.Email;
-import org.modelmapper.ModelMapper;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class EmailService {
@@ -18,7 +13,7 @@ public class EmailService {
     private final EmailProperty emailProperty;
 
     public EmailService(JavaMailSender javaMailSender,
-                              EmailProperty emailProperty) {
+                        EmailProperty emailProperty) {
         this.javaMailSender = javaMailSender;
         this.emailProperty = emailProperty;
     }

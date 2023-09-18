@@ -1,6 +1,9 @@
 package com.melitaltd.controller;
 
-import com.melitaltd.model.*;
+import com.melitaltd.model.Order;
+import com.melitaltd.model.PersonalInformation;
+import com.melitaltd.model.Product;
+import com.melitaltd.model.ProductPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -2,8 +2,6 @@ package com.melitaltd.controllers;
 
 import com.melitaltd.model.ApprovalRequest;
 import com.melitaltd.services.CareService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

@@ -12,6 +12,7 @@ public enum ProductPackage {
 
     private final String product;
     private final String productPackage;
+
     ProductPackage(String product, String productPackage) {
         this.product = product;
         this.productPackage = productPackage;

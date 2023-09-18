@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class Order{
+public class Order {
     private Long id;
     @NotNull(message = "personal information cannot be null")
     private PersonalInformation personalInformation;

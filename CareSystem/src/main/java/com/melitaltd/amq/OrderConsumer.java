@@ -11,10 +11,6 @@ import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 @Service
 @Slf4j
 public class OrderConsumer {
@@ -33,22 +29,16 @@ public class OrderConsumer {
     public void receiveMessage(QueueObjectWrapper message, Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws Exception {
         log.info("Message Received: {}", message);
-        if(message.getTraceId() == null || message.getObject() == null){
+        if (message.getTraceId() == null || message.getObject() == null) {
             channel.basicNack(tag, false, true);
-        } else{
+        } else {
             Order order = mapper.map(message.getObject(), Order.class);
-            CompletableFuture<Boolean> response = orderService.processMQOrder(order, message.getTraceId());
+            Boolean result = orderService.processMQOrder(order, message.getTraceId());
 
-            try {
-                Boolean result = response.orTimeout(5, TimeUnit.SECONDS).get();
-                if (result) {
-                    channel.basicAck(tag, false);
-                } else {
-                    channel.basicNack(tag, false, true);
-                }
-            } catch (Exception e) {
+            if (result) {
+                channel.basicAck(tag, false);
+            } else {
                 channel.basicNack(tag, false, true);
-                log.error(String.valueOf(e));
             }
         }
     }

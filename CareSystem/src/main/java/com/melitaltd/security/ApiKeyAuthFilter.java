@@ -31,7 +31,7 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
         if (isH2ConsoleRequest(request)) {
             // Allow the request to proceed without filtering
             filterChain.doFilter(request, response);
-        }else {
+        } else {
             // Get the API key and secret from request headers
             String requestApiKey = request.getHeader("X-API-KEY");
             String requestApiSecret = request.getHeader("X-API-SECRET");

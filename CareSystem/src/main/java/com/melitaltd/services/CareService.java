@@ -19,21 +19,22 @@ public class CareService {
     private final EmailService emailService;
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
-    public CareService(EmailService emailService, OrderRepository orderRepository, ModelMapper modelMapper){
+
+    public CareService(EmailService emailService, OrderRepository orderRepository, ModelMapper modelMapper) {
         this.emailService = emailService;
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
     }
 
-    public List<Order> getOrdersByApprovalStatus(int approvalStatus){
+    public List<Order> getOrdersByApprovalStatus(int approvalStatus) {
         AtomicReference<List<OrderEntity>> orderRef = new AtomicReference<>();
-        if(approvalStatus < 0){
+        if (approvalStatus < 0) {
             orderRef.set(orderRepository.findAll());
-        }else{
+        } else {
             orderRepository.findByApprove(approvalStatus).ifPresentOrElse(
                     data -> {
                         orderRef.set(data);
-                        },
+                    },
                     () -> {
                         throw ServiceError.DATA_NOT_AVAILABLE.buildException();
                     }
@@ -48,9 +49,9 @@ public class CareService {
     }
 
     @Transactional
-    public void approveOrder(int orderId, ApprovalRequest approvalRequest){
+    public void approveOrder(int orderId, ApprovalRequest approvalRequest) {
         int approvalStatus = 2; // rejected
-        if(approvalRequest.isApprovalStatus()){
+        if (approvalRequest.isApprovalStatus()) {
             // call order fullfillment service and update the
             approvalStatus = 1;
         }

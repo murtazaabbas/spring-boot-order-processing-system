@@ -2,7 +2,10 @@ package com.melitaltd.services;
 
 import com.melitaltd.amq.OrderProducer;
 import com.melitaltd.exception.ServiceException;
-import com.melitaltd.model.*;
+import com.melitaltd.model.Order;
+import com.melitaltd.model.PersonalInformation;
+import com.melitaltd.model.Product;
+import com.melitaltd.model.ProductPackage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,8 +19,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class TestOrderService {
